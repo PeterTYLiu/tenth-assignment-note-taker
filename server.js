@@ -12,6 +12,7 @@ const PORT = process.env.PORT || 3000;
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static(__dirname + "/public"));
 
 // Random ID generator for notes
 // =============================================================
@@ -37,8 +38,7 @@ app.get("/notes", (req, res) => {
 // API routes
 app.get("/api/notes", (req, res) => {
   fs.readFile(path.join(__dirname, "db/db.json"), "utf8", (err, data) => {
-    console.log(JSON.parse(data));
-    res.json(data);
+    res.json(JSON.parse(data));
   });
 });
 
@@ -69,7 +69,7 @@ app.post("/api/notes", (req, res) => {
       (err) => {
         if (err) throw err;
         console.log("The file has been saved with the new note.");
-        res.send(true);
+        res.send(newNote);
       }
     );
   });
